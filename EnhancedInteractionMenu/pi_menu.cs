@@ -7,7 +7,6 @@ using System;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Collections.Generic;
-using EnhancedInteractionMenu;
 
 public class PIMenu : Script
 {
@@ -28,12 +27,8 @@ public class PIMenu : Script
 
     Color MenuColor;
 
-    private BannerBling bling;
-
     public PIMenu()
     {
-
-        bling = new BannerBling();
         Tick += OnTick;
         KeyDown += OnKeyDown;
 
@@ -299,7 +294,6 @@ public class PIMenu : Script
     {
         Game.DisableControl(2, GTA.Control.InteractionMenu);
         MenuPool.ProcessMenus();
-        bling.Draw();
 
         if (MenuPool.IsAnyMenuOpen())
         {
