@@ -81,19 +81,24 @@ namespace EnhancedInteractionMenu
             Title.Font = GTA.Font.ChaletComprimeCologne;
             Title.Scale = 0.86f;
             Subtitle.Color = PIMenu.MenuColor;
+            RedrawLists("Pistols");
+            RefreshIndex();
+        }
 
+        private void RedrawLists(string type)
+        {
+            Clear();
             var typeList = _database.Select(pair => pair.Key).Cast<dynamic>().ToList();
-            var typeItem = new UIMenuListItem("Ammo Type", typeList, 0, "Select an ammo type to purchase.");
+            var typeItem = new UIMenuListItem("Ammo Type", typeList, typeList.FindIndex(n => n.ToString() == type), "Select an ammo type to purchase.");
             AddItem(typeItem);
 
             typeItem.OnListChanged += (list, newindex) =>
             {
-                RemoveItemAt(1);
-                var newWeaponItem = new UIMenuListItem("Weapon", GetListForType(list.IndexToItem(newindex).ToString()), 0);
-                MenuItems.Insert(1, newWeaponItem);
+                string newType = ((UIMenuListItem)MenuItems[0]).IndexToItem(((UIMenuListItem)MenuItems[0]).Index).ToString();
+                RedrawLists(newType);
             };
 
-            var weaponItem = new UIMenuListItem("Weapon", GetListForType("Pistols"), 0);
+            var weaponItem = new UIMenuListItem("Weapon", GetListForType(type), 0);
             AddItem(weaponItem);
 
             var buyRounds = new UIMenuItem("Rounds x 24");
@@ -103,17 +108,16 @@ namespace EnhancedInteractionMenu
 
             buyRounds.Activated += (menu, item) =>
             {
-                Game.Player.Character.Weapons.Give((WeaponHash)Enum.Parse(typeof (WeaponHash), MenuItems[1].Text), 24, false, false);
+                Game.Player.Character.Weapons.Give((WeaponHash)Enum.Parse(typeof(WeaponHash), ((UIMenuListItem)MenuItems[1]).IndexToItem(((UIMenuListItem)MenuItems[1]).Index).ToString()), 24, false, false);
             };
 
             buyAllRounds.Activated += (menu, item) =>
             {
-                Game.Player.Character.Weapons.Give((WeaponHash)Enum.Parse(typeof(WeaponHash), MenuItems[1].Text), 9999, false, false);
+                Game.Player.Character.Weapons.Give((WeaponHash)Enum.Parse(typeof(WeaponHash), ((UIMenuListItem)MenuItems[1]).IndexToItem(((UIMenuListItem)MenuItems[1]).Index).ToString()), 9999, false, false);
             };
 
             AddItem(buyRounds);
             AddItem(buyAllRounds);
-            RefreshIndex();
         }
 
         private void RecalculatePrice()
