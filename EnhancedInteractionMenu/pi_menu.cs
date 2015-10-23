@@ -22,6 +22,9 @@ public class PIMenu : Script
     UIMenuItem PassiveModeItem;
     UIMenuListItem MenuColorItem;
 
+    UIMenu MenuOptionsMenu;
+    UIMenu AboutMenu;
+
     bool IsPassiveMode = false;
 
     UIMenu InventoryMenu;
@@ -139,6 +142,30 @@ public class PIMenu : Script
 
         MainMenu.AddItem(PassiveModeItem);
 
+        MenuOptionsMenu = new UIMenu(Game.Player.Name.ToString(), "MENU OPTIONS", new Point(0, 0));
+        MenuPool.Add(MenuOptionsMenu);
+        MenuOptionsMenu.SetBannerType(GlobalMenuBanner);
+        MenuOptionsMenu.Title.Font = GTA.Font.ChaletComprimeCologne;
+        MenuOptionsMenu.Title.Scale = 0.86f;
+        MenuOptionsMenu.Subtitle.Color = MenuColor;
+
+        var MenuOptionsMenuItem = new UIMenuItem("Menu Options", "");
+
+        MainMenu.AddItem(MenuOptionsMenuItem);
+
+        MainMenu.BindMenuToItem(MenuOptionsMenu, MenuOptionsMenuItem);
+
+        AboutMenu = new UIMenu(Game.Player.Name.ToString(), "ABOUT", new Point(0, 0));
+        MenuPool.Add(AboutMenu);
+        AboutMenu.SetBannerType(GlobalMenuBanner);
+        AboutMenu.Title.Font = GTA.Font.ChaletComprimeCologne;
+        AboutMenu.Title.Scale = 0.86f;
+        AboutMenu.Subtitle.Color = MenuColor;
+
+        var AboutOptionsMenuItem = new UIMenuItem("About", "");
+
+        MenuOptionsMenu.BindMenuToItem(AboutMenu, AboutOptionsMenuItem);
+
         var MenuColorList = new List<dynamic>
         {
             "Blue",
@@ -149,7 +176,18 @@ public class PIMenu : Script
             "Yellow",
         };
 
-        MainMenu.AddItem(MenuColorItem = new UIMenuListItem("Color", MenuColorList, 0, "Select interaction menu's color theme."));
+        MenuOptionsMenu.AddItem(MenuColorItem = new UIMenuListItem("Color", MenuColorList, 0, "Select interaction menu's color theme."));
+
+        MenuOptionsMenu.AddItem(AboutOptionsMenuItem);
+
+        var VersionItem = new UIMenuItem("Version");
+        var AuthorItem = new UIMenuItem("Author");
+
+        AboutMenu.AddItem(VersionItem);
+        AboutMenu.AddItem(AuthorItem);
+
+        VersionItem.SetRightLabel("1.0");
+        AuthorItem.SetRightLabel("jedijosh920 & Guadmaz");
 
         MainMenu.OnItemSelect += (UIMenu sender, UIMenuItem selectedItem, int index) =>
         {
@@ -178,7 +216,7 @@ public class PIMenu : Script
             }
         };
 
-        MainMenu.OnListChange += (UIMenu sender, UIMenuListItem listItem, int newIndex) =>
+        MenuOptionsMenu.OnListChange += (UIMenu sender, UIMenuListItem listItem, int newIndex) =>
         {
             if (listItem == MenuColorItem)
             {
@@ -333,6 +371,8 @@ public class PIMenu : Script
             GlobalMenuBanner.Color = MenuColor;
             MainMenu.Subtitle.Color = MenuColor;
             InventoryMenu.Subtitle.Color = MenuColor;
+            MenuOptionsMenu.Subtitle.Color = MenuColor;
+            AboutMenu.Subtitle.Color = MenuColor;
         }
 
         if (IsPassiveMode)

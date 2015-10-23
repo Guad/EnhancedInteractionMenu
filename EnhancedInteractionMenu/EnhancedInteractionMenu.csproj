@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AmmoMenu.cs" />
     <Compile Include="pi_menu.cs" />
     <Compile Include="PointsOfInterest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
