@@ -7,11 +7,12 @@ using System;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Collections.Generic;
+using EnhancedInteractionMenu;
 
 public class PIMenu : Script
 {
     MenuPool MenuPool = new MenuPool();
-    UIResRectangle GlobalMenuBanner;
+    public static UIResRectangle GlobalMenuBanner;
 
     UIMenu MainMenu;
     UIMenuListItem QuickGPSItem;
@@ -25,7 +26,7 @@ public class PIMenu : Script
 
     UIMenu InventoryMenu;
 
-    Color MenuColor;
+    public static Color MenuColor;
 
     public PIMenu()
     {
@@ -286,10 +287,25 @@ public class PIMenu : Script
             }
         };
 
+        var menu = new AmmoMenu();
+        var ammoItem = new UIMenuItem("Ammo");
+        InventoryMenu.AddItem(ammoItem);
+        InventoryMenu.BindMenuToItem(menu, ammoItem);
+        MenuPool.Add(menu);
+
         MainMenu.RefreshIndex();
         InventoryMenu.RefreshIndex();
 
-        Interval = 1;
+        
+    }
+    
+    public static void PrettifyMenu(ref UIMenu menu)
+    {
+        menu.Title.Caption = Game.Player.Name;
+        menu.SetBannerType(GlobalMenuBanner);
+        menu.Title.Font = GTA.Font.ChaletComprimeCologne;
+        menu.Title.Scale = 0.86f;
+        menu.Subtitle.Color = MenuColor;
     }
 
     void OnTick(object sender, EventArgs e)
