@@ -143,6 +143,7 @@ public class PIMenu : Script
                     if (!IsPassiveMode)
                     {
                         Game.Player.Character.IsInvincible = true;
+                        Game.Player.Character.Alpha = 200;
                         Function.Call(Hash.SET_POLICE_IGNORE_PLAYER, Game.Player, true);
                         Function.Call(Hash.SET_WANTED_LEVEL_MULTIPLIER, 0.0f);
                         PassiveModeItem.Text = "Disable Passive Mode";
@@ -151,6 +152,7 @@ public class PIMenu : Script
 
                     else if (IsPassiveMode)
                     {
+                        Game.Player.Character.ResetAlpha();
                         Function.Call(Hash.SET_POLICE_IGNORE_PLAYER, Game.Player, false);
                         Function.Call(Hash.SET_WANTED_LEVEL_MULTIPLIER, 1.0f);
                         PassiveModeItem.Text = "Enable Passive Mode";
