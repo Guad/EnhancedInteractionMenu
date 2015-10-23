@@ -32,7 +32,9 @@ namespace EnhancedInteractionMenu
         public enum Type
         {
             AmmuNation,
-            LosSantosCustoms
+            LosSantosCustoms,
+            ConvenienceStores,
+            ClothingStore
         }
 
         public static Vector3 GetClosestPoi(Vector3 relativeTo, Type type)

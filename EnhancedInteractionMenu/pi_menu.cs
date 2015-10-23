@@ -61,12 +61,27 @@ public class PIMenu : Script
         {
             "None",
             "Ammu-Nation",
-            "ATM",
+            "Convenience Store",
             "Mod Shop",
             "Clothes Store",
         };
 
         MainMenu.AddItem(QuickGPSItem = new UIMenuListItem("Quick GPS", QuickGPSList, 0, "Select to place your waypoint at a set location."));
+
+        QuickGPSItem.Activated += (UIMenu sender, UIMenuItem selecteditem) =>
+        {
+            var tmpList = (UIMenuListItem)selecteditem;
+            switch (tmpList.Index)
+            {
+                case 0:
+                    Function.Call(Hash.SET_WAYPOINT_OFF);
+                    break;
+                case 1:
+                    Vector3 NearestAmmunation = PointsOfInterest.GetClosestPoi(Game.Player.Character.Position, PointsOfInterest.Type.AmmuNation);
+                    Function.Call(Hash.SET_NEW_WAYPOINT, NearestAmmunation.X, NearestAmmunation.Y);
+                    break;
+            }
+        };
 
         InventoryMenu = new UIMenu(Game.Player.Name.ToString(), "INVENTORY", new Point(0, 0));
         MenuPool.Add(InventoryMenu);
